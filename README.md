@@ -1,7 +1,7 @@
 tlnmpv
 ======
 
-[Debian 6-7] Lowend Nginx-MariDB-PHP For Vanilla Forum &amp; Wordpress Quick Installer Script
+[Debian 6-7] Lowend Nginx-MariaDB-PHP For Vanilla Forum &amp; Wordpress Quick Installer Script
 
 Warning! This script will overwrite previous configs during installation.
 
