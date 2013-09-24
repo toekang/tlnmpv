@@ -1,5 +1,5 @@
 #!/bin/bash
-# Enter [q] to quit. Me, 'toekang' not giving any warranty & responsibility to anything! and to any damage on your system, proceed at your own risk.
+# Enter [q] to quit. anyway, me, 'toekang' not giving any warranty & responsibility to anything! and to any damage on your system, so please proceed at your own risk.
 function s3 { sleep 2; }; if [ $USER != 'root' ]; then echo "  Run as root only"; s3; exit; fi; if [ ! -f /etc/debian_version ]; then echo "  Only work on Debian 6-7 systems."; s3; exit; fi; 
 function ll { echo $1 >> /etc/apt/sources.list; }; function ab { p_i "  Aborting!"; }; function t { cd ~; ./tlnmpv; }; function p_i { echo; echo -e "\033[37;1m$1
 "; }; function b_s { apt-get update; apt-get install nano zip unzip dash less expect -y; }; function u_n { apt-get remove --purge portmap rpcbind rsyslog\* apache2\* bind9\* samba\* aptitude\
