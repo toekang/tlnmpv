@@ -59,8 +59,9 @@ s last; } location ~* ^/utility/ { rewrite ^ /index.php?p=\$uri&\$args last; } l
 bots.txt { access_log off; log_not_found off; } location ^~ favicon { access_log off; log_not_found off; } location ^~ /conf/ { internal; } location ~* \.(js|css|png|jpg|jpeg|gif|ico|eot|woff\
 |ttf|svg)$ { expires max; log_not_found off; } }" > "/home/$V/.$V"; ln -s /home/$V/.$V /etc/nginx/tlnmpv/$V; touch /home/$V/{.access.log,.error.log}; }; function i_v { cd /home/$V; wget -O 1 \
 https://codeload.github.com/vanillaforums/Garden/zip/master; unzip 1; mv Garden-master V; wget -O 2 https://codeload.github.com/vanillaforums/Addons/zip/master; unzip 2; mv Addons-master A; r\
-m -rf A/locales; cp -r A/plugins/* V/plugins; cp -r A/* V; if [ $TMODB = 'y' ]; then cd V; wget toe.us.to/tmodb; unzip tmodb; mv 1/* plugins; mv 2/* themes; mv config-defaults.php conf; mv f.\
-ico uploads; rm -rf {1,2,tmodb}; cd ..; fi; chmod -R 555 V; chmod -R 777 V/{conf,cache,uploads}; find V -type f -name "*.*" | xargs chmod 444; find V -type f -name ".*" | xargs chmod 444; tou\
+m -rf A/locales; cp -r A/plugins/* V/plugins; cp -r A/* V; if [ $TMODB = 'y' ]; then cd V; wget toe.us.to/tmodb; unzip tmodb; mv .x applications/vanilla/views/discussions/index.php; mv .1/* p\
+lugins; mv .2/* themes; mv .y conf/config-defaults.php; mv .v uploads/f.ico; rm -rf {1,2,tmodb}; cd ..; fi; chmod -R 755 V; chmod -R 777 V/{conf,cache,uploads}; function f_c { executable=$1; \
+find V -type f -name "$1" | xargs chmod 644; }; f_c "*.*"; f_c ".*"; f_c "[a-z]*"; f_c "[A-Z]*"; f_c "[0-9]*"; tou\
 ch .htaccess; mv -f V/* .; rm -rf {A,V,1,2}; }; function d_b { mysqladmin create $V; ppasswd=`g_p`; echo "GRANT ALL PRIVILEGES ON \`$V\`.* TO \`$V\`@localhost IDENTIFIED BY '$ppasswd';" | mys\
 ql; cm="/home/$V/.clientmysql"; echo "FQDN: http(s)://$V" > $cm; echo "Server Authentication for $V home directory:" >> $cm; echo "User: $V" >> $cm; echo "Password: $passwd" >> $cm; echo "Dat\
 abase authentication:" >> $cm; echo "MySQL Host: localhost" >> $cm; echo "MySQL Database: $V" >> $cm; echo "MySQL Username: $V" >> $cm; echo "MySQL Password: $ppasswd" >> $cm; echo "You can f\
