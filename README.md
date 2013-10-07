@@ -8,6 +8,4 @@ Its craeted to suit MY needs hence some of the stuff may not appeal to you, whic
 
 <code>wget --no-check-certificate raw.github.com/toekang/tlnmpv/master/tlnmpv; chmod 100 tlnmpv; ./tlnmpv<code>
 
-mirror:
-<code>wget toe.us.to/tlnmpv; chmod 100 tlnmpv; ./tlnmpv<code>
 
