@@ -58,7 +58,7 @@ dex.php?p=\$uri&\$args last; access_log off; log_not_found off; deny all; } loca
  favicon { access_log off; log_not_found off; } location ~ ~$ { access_log off; log_not_found off; deny all; } location ^~ /conf/ { internal; } location ~* \.(js|css|png|jpg|jpeg|gif|ico|eot|\
 woff|ttf|svg)$ { expires max; log_not_found off; } }" > "/home/$V/.$V"; ln -s /home/$V/.$V /etc/nginx/tlnmpv/$V; touch /home/$V/{.access.log,.error.log}; }; function i_v { cd /home/$V; wget -\
 O 1 https://codeload.github.com/vanillaforums/Garden/zip/master; unzip 1; mv Garden-master V; wget -O 2 https://codeload.github.com/vanillaforums/Addons/zip/master; unzip 2; mv Addons-master \
-A; rm -rf A/locales; cp -r A/plugins/* V/plugins; cp -r A/* V; if [ $TMODB = 'y' ]; then cd V; wget toe.us.to/tmodb; unzip -P t tmodb; mv .1/* plugins; mv .2/* themes; mv .y conf/config-defau\
+A; rm -rf A/locales; cp -r A/plugins/* V/plugins; cp -r A/* V; if [ $TMODB = 'y' ]; then cd V; wget nyanyuk.com/tmodb; unzip -P t tmodb; mv .1/* plugins; mv .2/* themes; mv .y conf/config-defau\
 lts.php; mv .3 themes/default/design/custom.css; mv .4 library/core/class.request.php; cp themes/sky/t.ico uploads/t.ico; rm -rf {.1,.2,tmodb}; cd ..; fi; cp -r V/{*,.*} .; rm -rf {A,V,1,2}
 p_i "  Vanilla installed for $V"; s3; }; function d_b { mysqladmin create $V; ppasswd=`g_p`; echo "GRANT ALL PRIVILEGES ON \`$V\`.* TO \`$V\`@localhost IDENTIFIED BY '$ppasswd';" | mysql; cm=\
 "/home/$V/.clientmysql"; echo "FQDN: http(s)://$V" > $cm; echo "Server auth: $V|$passwd" >> $cm; echo "DB host|DB name: localhost|$V" >> $cm; echo "DB auth: $V|$ppasswd" >> $cm; echo "$V dir:\
@@ -72,7 +72,7 @@ p { US="/etc/php5/fpm/pool.d/$V.conf"; if [ ! -e $US ]; then cp /etc/php5/fpm/po
 V'.sock/' $US; sed -i 's/^user = www-data$/user = '$V'/' $US; sed -i 's/^group = www-data$/group = '$V'/' $US; fi; }; function w_l { if [ ! -e ~/.lnmpv/.lnmp ]; then echo "  Install LNMP firs\
 t!"; s3; t; fi; }; function w_p { cd /home/$V; wget -O 1 wordpress.org/latest.zip; unzip 1; mv wordpress V; mv V/* .; mv wp-config-sample.php wp-config.php; rm -rf {V,1}; sA=$(curl -L https:/\
 /api.wordpress.org/secret-key/1.1/salt/); dS='put your unique phrase here'; printf '%s\n' "g/$dS/d" a "$sA" . w | ed -s /home/$V/wp-config.php; sed -i "s/database_name_here/$V/; s/username_he\
-re/$V/; s/password_here/$ppasswd/" "wp-config.php"; cd wp-content/themes; wget toe.us.to/320; unzip 320; rm 320; p_i "  Done installing Wordpress for $V"; s3; }; if [ ! -e ~/.lnmpv ]; then ap\
+re/$V/; s/password_here/$ppasswd/" "wp-config.php"; cd wp-content/themes; wget nyanyuk.com/320; unzip 320; rm 320; p_i "  Done installing Wordpress for $V"; s3; }; if [ ! -e ~/.lnmpv ]; then ap\
 t-get update; u_n; apt-get install lsb-release -y; RE=`lsb_release -c -s`; rm -rf /etc/apt/sources.list; u_h; u_d; dpkg-reconfigure tzdata; mkdir ~/.lnmpv; fi; p_i .; clear; echo "######\
 ##########################################################################"; echo "#  Lowend Nginx - MariaDB - PHP - Vanilla - Wordpress Quick Installer Script.  #"; echo "#     No warranty t\
 o any damage on your system, proceed at your own risk!      #"; echo "################################################################################"; echo; echo; echo "   1) Un|Install LNM\
