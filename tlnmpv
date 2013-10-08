@@ -92,5 +92,5 @@ fi;; 8)echo; echo; if [ -e /etc/webmin/uninstall.sh ]; then apt-get remove --pur
 e.ip.list; wget -q -O /usr/local/ddos/ddos.sh inetbase.com/scripts/ddos/ddos.sh; chmod 0755 /usr/local/ddos/ddos.sh; cp -s /usr/local/ddos/ddos.sh /usr/local/sbin/ddos/usr/local/ddos/ddos.sh \
 --cron > /dev/null 2>&1; echo ") Done, DDOS Deflate installed."; s3; t; fi;; 6)if [ -e ~/.lnmpv/.lnmp ]; then read -p ") Enter [FQDN]|[q]: " -r V; fi; if [ $V = 'q' ]; then ab; s3; t; else r_\
 v; echo; read -p "  Enable Self Signed SSL? [y/n]: " -n 1 -r SSSL; if [ $SSSL = 'y' ]; then a_h; n_x; ss_l; d_b; sed -i "s/#1//" /home/$V/.$V; sed -i "s/#2/location \/ { try_files \$uri \$ur\
-i\/ \/index.php?\$args\; }/" /home/$V/.$V; w_p; f_p; f_n; else a_h; n_x; d_b; sed -i "s/#3/location \/ { try_files \$uri \$uri\/ \/index.php?\$args\; }\#/" /home/$V/.$V; w_p; f_p; f_n; fi; fi
+i\/ \/index.php?\$args\; }/" /home/$V/.$V; w_p; f_p; f_n; else a_h; n_x; d_b; sed -i "s/#1/location \/ { try_files \$uri \$uri\/ \/index.php?\$args\; }\#/" /home/$V/.$V; w_p; f_p; f_n; fi; fi
 ;; 0)cat ~/tlnmpv | less; t;; esac; echo ") No option!"; s3; t done
