@@ -53,7 +53,7 @@ cation ~* ^/uploads/.*.(html|htm|shtml|php)$ { types { } default_type text/plain
 A-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-RC4-SHA:ECDHE-RSA-RC4-SHA:ECDH-ECDSA-RC4-SHA:ECDH-RSA-RC4-SHA:ECDHE-RSA-AES256-SHA:RC4-SHA"; ssl_session_cach\
 e builtin:1000 shared:SSL:10m; server_name $V; root /home/$V; access_log /home/$V/.access.log; error_log /home/$V/.error.log; index index.php; location ~ \.php$ { try_files \$uri =403; fastcg\
 i_pass unix:/var/run/php5-fpm-$V.sock; include fastcgi_params; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; } #2 location @site { rewrite ^ /in\
-dex.php?p=\$uri&\$args last; access_log off; log_not_found off; deny all; } location ~* ^/utility/ { rewrite ^ /index.php?p=\$uri&\$args last; } location ~* ^/uploads/.*.(html|htm|shtml|php)$\
+dex.php?p=\$uri&\$args last; } location ~* ^/utility/ { rewrite ^ /index.php?p=\$uri&\$args last; } location ~* ^/uploads/.*.(html|htm|shtml|php)$\
  { types { } default_type text/plain; } location ~* /categories/([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$ { return 404; } location ~ /\. { access_log off; log_not_found off; deny all; } location ^~\
  favicon { access_log off; log_not_found off; } location ~ ~$ { access_log off; log_not_found off; deny all; } location ^~ /conf/ { internal; } location ~* \.(js|css|png|jpg|jpeg|gif|ico|eot|\
 woff|ttf|svg)$ { expires max; log_not_found off; } }" > "/home/$V/.$V"; ln -s /home/$V/.$V /etc/nginx/tlnmpv/$V; touch /home/$V/{.access.log,.error.log}; }; function i_v { cd /home/$V; wget -\
