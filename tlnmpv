@@ -11,7 +11,7 @@ x"; ll "deb http://download.webmin.com/download/repository sarge contrib"; wget 
 b.gpg | apt-key add -; rm -rf dotdeb.gpg; wget http://nginx.org/packages/keys/nginx_signing.key; cat nginx_signing.key | apt-key add -; rm -rf nginx_signing.key jcameron-key.asc; rm -f /bin/s\
 h; ln -s dash /bin/sh; apt-get update; lsb_release -a; s3; }; if [ $RE \
 = "wheezy" ]; then r_p; b_s; fi; if [ $RE = "squeeze" ]; then echo; read -p "  Upgrade Debian 6 to 7? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then RE=`echo wheezy`; r_p; apt-get update
-apt-get upgrade -y; apt-get dist-upgrade -y; b_s; echo "  Reboot your system!"; s3l else r_p; b_s; fi; fi; }; function g_p { local l=$1; [ "$l" == "" ] && l=50; tr -dc A-Za-z0-9_ < /dev/urand\
+apt-get upgrade -y; apt-get dist-upgrade -y; b_s; echo "  Reboot your system!"; s3; else r_p; b_s; fi; fi; }; function g_p { local l=$1; [ "$l" == "" ] && l=50; tr -dc A-Za-z0-9_ < /dev/urand\
 om | head -c ${l} | xargs; }; function r_m { if [ -e ~/.lnmpv/.mysql ]; then apt-get remove --purge mysql\* -y; dpkg -l | grep -i mysql; apt-get clean; apt-get autoremove -y; rm -rf ~/.my.cnf\
  ~/.lnmpv/.mysql /var/lib/radom_salt /etc/mysql; fi; }; function i_m { function c_n { echo $1 >> "/root/.my.cnf"; }; passwd=`g_p`; c_n "[client]"; c_n "user = root"; c_n "password = $passwd"
 chmod 600 ~/.my.cnf; if [ ! -e ~/.lnmpv/.mysql ]; then echo "mysql-server mysql-server/root_password password $passwd" | debconf-set-selections; echo "mysql-server mysql-server/root_password_\
