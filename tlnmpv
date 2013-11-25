@@ -73,7 +73,8 @@ V'.sock/' $US; sed -i 's/^user = www-data$/user = '$V'/' $US; sed -i 's/^group =
 t!"; s3; t; fi; }; function w_p { cd /home/$V; wget -O 1 wordpress.org/latest.zip; unzip 1; mv wordpress V; mv V/* .; mv wp-config-sample.php wp-config.php; rm -rf {V,1}; sA=$(curl -L https:/\
 /api.wordpress.org/secret-key/1.1/salt/); dS='put your unique phrase here'; printf '%s\n' "g/$dS/d" a "$sA" . w | ed -s /home/$V/wp-config.php; sed -i "s/database_name_here/$V/; s/username_he\
 re/$V/; s/password_here/$ppasswd/" "wp-config.php"; cd wp-content/themes; wget nyanyuk.com/320; unzip 320; rm 320; p_i "  Done installing Wordpress for $V"; s3; }; if [ ! -e ~/.lnmpv ]; then \
-apt-get update; u_n; apt-get install lsb-release -y; RE=`lsb_release -c -s`; rm -rf /etc/apt/sources.list; u_h; u_d; dpkg-reconfigure tzdata; mkdir ~/.lnmpv; fi; p_i .; clear; echo "######\
+apt-get update; u_n; apt-get install lsb-release -y; RE=`lsb_release -c -s`; mv /etc/apt/{sources.list,.bak}; touch /etc/apt/sources.list; u_h; u_d; dpkg-reconfigure tzdata; mkdir ~/.lnmpv; fi
+p_i .; clear; echo "######\
 ##########################################################################"; echo "#  Lowend Nginx - MariaDB - PHP - Vanilla - Wordpress Quick Installer Script.  #"; echo "#     No warranty t\
 o any damage on your system, proceed at your own risk!      #"; echo "################################################################################"; echo; echo; echo "   1) Un|Install LNM\
 P"; echo "      LNMPV by order:           6) Un|Install Wordpress"; echo "   2) Un|Install Nginx          7) Un|Install Exim4"; echo "   3) Un|Install MariaDB        8) Un|Install Webmin"; ec\
