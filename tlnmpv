@@ -11,7 +11,7 @@ osl.org/pub/mariadb/repo/5.5/debian $RE main"; ll "deb http://download.webmin.co
 http://www.dotdeb.org/dotdeb.gpg; cat dotdeb.gpg | apt-key add -; rm -rf dotdeb.gpg; wget http://nginx.org/packages/keys/nginx_signing.key; cat nginx_signing.key | apt-key add -; apt-key adv \
 --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db; rm -rf nginx_signing.key jcameron-key.asc; rm -f /bin/sh; ln -s dash /bin/sh; apt-get update; lsb_release -a; s3; }; if [ $RE \
 = "wheezy" ]; then r_p; b_s; fi; if [ $RE = "squeeze" ]; then echo; read -p "  Upgrade Debian 6 to 7? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then RE=`echo wheezy`; r_p; apt-get update
-apt-get upgrade; apt-get dist-upgrade; b_s; echo "  Reboot your system!"; s3 else r_p; b_s; fi; fi; }; function g_p { local l=$1; [ "$l" == "" ] && l=50; tr -dc A-Za-z0-9_ < /dev/urand\
+apt-get upgrade; apt-get dist-upgrade; b_s; echo "  Reboot your system!"; s3; else r_p; b_s; fi; fi; }; function g_p { local l=$1; [ "$l" == "" ] && l=50; tr -dc A-Za-z0-9_ < /dev/urand\
 om | head -c ${l} | xargs; }; function r_m { if [ -e ~/.lnmpv/.mysql ]; then apt-get remove --purge mysql\* -y; dpkg -l | grep -i mysql; apt-get clean; apt-get autoremove -y; rm -rf ~/.my.cnf\
  ~/.lnmpv/.mysql /var/lib/radom_salt /etc/mysql; fi; }; function i_m { function c_n { echo $1 >> "/root/.my.cnf"; }; passwd=`g_p`; c_n "[client]"; c_n "user = root"; c_n "password = $passwd"
 chmod 600 ~/.my.cnf; if [ ! -e ~/.lnmpv/.mysql ]; then echo "mysql-server mysql-server/root_password password $passwd" | debconf-set-selections; echo "mysql-server mysql-server/root_password_\
@@ -73,8 +73,7 @@ V'.sock/' $US; sed -i 's/^user = www-data$/user = '$V'/' $US; sed -i 's/^group =
 t!"; s3; t; fi; }; function w_p { cd /home/$V; wget -O 1 wordpress.org/latest.zip; unzip 1; mv wordpress V; mv V/* .; mv wp-config-sample.php wp-config.php; rm -rf {V,1}; sA=$(curl -L https:/\
 /api.wordpress.org/secret-key/1.1/salt/); dS='put your unique phrase here'; printf '%s\n' "g/$dS/d" a "$sA" . w | ed -s /home/$V/wp-config.php; sed -i "s/database_name_here/$V/; s/username_he\
 re/$V/; s/password_here/$ppasswd/" "wp-config.php"; cd wp-content/themes; wget nyanyuk.com/320; unzip 320; rm 320; p_i "  Done installing Wordpress for $V"; s3; }; if [ ! -e ~/.lnmpv ]; then \
-apt-get update; u_n; apt-get install lsb-release -y; RE=`lsb_release -c -s`; mv /etc/apt/{sources.list,.bak}; touch /etc/apt/sources.list; u_h; u_d; dpkg-reconfigure tzdata; mkdir ~/.lnmpv; fi
-p_i .; clear; echo "######\
+apt-get update; u_n; apt-get install lsb-release -y; RE=`lsb_release -c -s`; rm /etc/apt/sources.list; u_h; u_d; dpkg-reconfigure tzdata; mkdir ~/.lnmpv; fi; p_i .; clear; echo "######\
 ##########################################################################"; echo "#  Lowend Nginx - MariaDB - PHP - Vanilla - Wordpress Quick Installer Script.  #"; echo "#     No warranty t\
 o any damage on your system, proceed at your own risk!      #"; echo "################################################################################"; echo; echo; echo "   1) Un|Install LNM\
 P"; echo "      LNMPV by order:           6) Un|Install Wordpress"; echo "   2) Un|Install Nginx          7) Un|Install Exim4"; echo "   3) Un|Install MariaDB        8) Un|Install Webmin"; ec\
