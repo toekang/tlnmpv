@@ -2,8 +2,8 @@
 # Enter [q] to quit. anyway, me 'toekang' not giving any warranty & responsibility to anything! and to any damage on your system, please proceed at your own risk.
 function s3 { sleep 3; }; if [ $USER != 'root' ]; then echo "  Run as root!"; s3; exit; fi; if [ ! -f /etc/debian_version ]; then echo "  Debian 6-7 systems only!"; s3; exit; fi; function ll {
 echo $1 >> /etc/apt/sources.list; }; function ab { p_i "  Aborting!"; }; function t { cd ~; ./tlnmpv; }; function f_m { service php5-fpm restart; }; function p_i { echo; echo -e "\033[37;1m$1
-"; }; function b_s { apt-get install nano zip unzip dash less expect curl ed; }; function u_n { apt-get remove --purge portmap rpcbind rsyslog\* apache2\* bind9\* samba\* aptitude\* sudo\*\
- vim nscd xinetd\* exim4\* sendmail\* mysql\* php5\* nginx\* exim4\* webmin\* -y; dpkg -l | grep -i portmap rpcbind rsyslog apache2 bind9 samba aptitude sudo vim xinetd exim4 sendmail mysql p\
+"; }; function b_s { apt-get install nano zip unzip dash less expect curl ed; }; function u_n { apt-get remove --purge portmap rsyslog\* apache2\* bind9\* samba\* aptitude\* sudo\*\
+ vim nscd xinetd\* exim4\* sendmail\* mysql\* php5\* nginx\* exim4\* webmin\* -y; dpkg -l | grep -i portmap rsyslog apache2 bind9 samba aptitude sudo vim xinetd exim4 sendmail mysql p\
 hp5 nginx exim4 webmin; apt-get clean; apt-get autoremove -y; }; function u_h { echo; read -p "  Enter hostname, skip enter [q]: " -r HSNM; if [ $HSNM = 'q' ]; then echo "  Skipping!"; s3; el\
 se echo "$HSNM" > /etc/hostname.sh; service hostname.sh stop; service hostname.sh start; fi; }; function u_d { function r_p { ll "deb http://ftp.debian.org/debian $RE main contrib non-free"
 ll "deb http://security.debian.org $RE/updates main contrib non-free"; ll "deb http://packages.dotdeb.org $RE all"; ll "deb http://nginx.org/packages/debian $RE nginx"; ll "deb http://ftp.osu\
