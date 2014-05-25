@@ -1,0 +1,96 @@
+#!/bin/bash
+# Enter [q] to quit. anyway, me 'toekang' not giving any warranty & responsibility to anything! and to any damage on your system, please proceed at your own risk.
+function s3 { sleep 3; }; if [ $USER != 'root' ]; then echo "  Run as root!"; s3; exit; fi; if [ ! -f /etc/debian_version ]; then echo "  Debian 6-7 systems only!"; s3; exit; fi; function ll {
+echo $1 >> /etc/apt/sources.list; }; function ab { p_i "  Aborting!"; }; function t { cd ~; ./tlnmpv; }; function f_m { service php5-fpm restart; }; function p_i { echo; echo -e "\033[37;1m$1
+"; }; function b_s { apt-get install nano zip unzip dash less expect curl ed; }; function u_n { apt-get remove --purge portmap rsyslog\* apache2\* bind9\* samba\* aptitude\* sudo\*\
+ vim nscd xinetd\* exim4\* sendmail\* mysql\* php5\* nginx\* exim4\* webmin\* -y; dpkg -l | grep -i portmap rsyslog apache2 bind9 samba aptitude sudo vim xinetd exim4 sendmail mysql p\
+hp5 nginx exim4 webmin; apt-get clean; apt-get autoremove -y; }; function u_h { echo; read -p "  Enter hostname, skip enter [q]: " -r HSNM; if [ $HSNM = 'q' ]; then echo "  Skipping!"; s3; el\
+se echo "$HSNM" > /etc/hostname.sh; service hostname.sh stop; service hostname.sh start; fi; }; function u_d { function r_p { ll "deb http://debian.osuosl.org/debian $RE main contrib non-free"
+ll "deb http://nginx.org/packages/debian $RE nginx"; ll "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian $RE main"; ll "deb http://download.webmin.com/download/repository sarge contrib"
+wget www.webmin.com/jcameron-key.asc; apt-key add jcameron-key.asc; wget http://www.dotdeb.org/dotdeb.gpg; cat dotdeb.gpg | apt-key add -; rm -rf dotdeb.gpg; wget http://nginx.org/packages/ke\
+ys/nginx_signing.key; cat nginx_signing.key | apt-key add -; apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db; rm -rf nginx_signing.key jcameron-key.asc; rm -f /bi\
+n/sh; ln -s dash /bin/sh; apt-get update; lsb_release -a; s3; }; if [ $RE = "wheezy" ]; then r_p; b_s; apt-get update; apt-get upgrade -y; apt-get dist-upgrade -y; fi; if [ $RE = "squeeze" ]; the\
+n echo; read -p "  Upgrade Debian 6 to 7? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then RE=`echo wheezy`; r_p; apt-get update; apt-get upgrade -y; apt-get dist-upgrade -y; b_s; echo "  Reboo\
+t your system!"; s3; else r_p; b_s; fi; fi; }; function g_p { local l=$1; [ "$l" == "" ] && l=50; tr -dc A-Za-z0-9_ < /dev/urand\
+om | head -c ${l} | xargs; }; function r_m { if [ -e ~/.lnmpv/.mysql ]; then apt-get remove --purge mysql\* -y; dpkg -l | grep -i mysql; apt-get clean; apt-get autoremove -y; rm -rf ~/.my.cnf\
+ ~/.lnmpv/.mysql /var/lib/radom_salt /etc/mysql; fi; }; function i_m { function c_n { echo $1 >> "/root/.my.cnf"; }; passwd=`g_p`; c_n "[client]"; c_n "user = root"; c_n "password = $passwd"
+chmod 600 ~/.my.cnf; if [ ! -e ~/.lnmpv/.mysql ]; then echo "mysql-server mysql-server/root_password password $passwd" | debconf-set-selections; echo "mysql-server mysql-server/root_password_\
+again password $passwd" | debconf-set-selections; apt-get -f install mariadb-server mariadb-client -y; SM=$(expect -c "; set timeout 10; spawn mysql_secure_installation; expect \"\"; send \"$pas\
+swd\r\"; expect \"\"; send \"n\r\"; expect \"\"; send \"y\r\"; expect \"\"; send \"y\r\"; expect \"\"; send \"y\r\"; expect \"\"; send \"y\r\"; expect eof; "); echo "$SM"; function c_l { echo\
+ $1 >> "/etc/mysql/conf.d/lnmpv.cnf"; }; c_l "[mysqld]"; c_l "port = 6033"; c_l "key_buffer = 8M"; c_l "query_cache_size = 0"; c_l "table_cache = 32"; c_l "init_connect='SET collation_connect\
+ion = utf8_unicode_ci'"; c_l "init_connect='SET NAMES utf8'"; c_l "character-set-server = utf8"; c_l "collation-server = utf8_unicode_ci"; c_l "skip-character-set-client-handshake"; c_l "defa\
+ult_storage_engine=MyISAM"; c_l "skip-innodb"; c_l "log-slow-queries=/var/log/mysql/slow-queries.log"; c_l "[client]"; c_l "default-character-set = utf8"; invoke-rc.d mysql restart; touch /ro\
+ot/.lnmpv/.mysql; fi; }; function r_5 { if [ -e ~/.lnmpv/.php5 ]; then apt-get remove --purge php5\* php5-fpm\* php5-common\* -y; dpkg -l | grep -i php5 php-fpm php-common; apt-get clean; apt\
+-get autoremove -y; rm -rf ~/.lnmpv/.php5; fi; }; function i_5 { if [ ! -e ~/.lnmpv/.php5 ]; then apt-get install php5-fpm php-apc php5-mysql php5-gd php5-curl -y; service php5-fpm stop; p1="\
+/etc/php5/fpm/pool.d/www.conf"; p2="/etc/php5/fpm/php.ini"; sed -i 's/^expose_php.*/expose_php = Off/' $p2; sed -i 's/^listen =.*/listen = \/var\/run\/php5-fpm-www-data.sock/' $p1; sed -i 's/\
+^pm.max_children.*/pm.max_children = '5'/' $p1; sed -i 's/\;pm.max_requests.*/pm.max_requests = '5000'/' $p1; sed -i 's/^pm.min_spare_servers.*/pm.min_spare_servers = '1'/' $p1; sed -i 's/^pm\
+.start_servers.*/pm.start_servers = '1'/' $p1; sed -i 's/^post_max_size.*/post_max_size = '25M'/' $p2; sed -i 's/^upload_max_filesize.*/upload_max_filesize = '25M'/' $p2; sed -i 's/^pm.max_sp\
+are_servers.*/pm.max_spare_servers = '2'/' $p1; sed -i 's/^memory_limit.*/memory_limit = '96M'/' $p2; sed -i 's/^max_input_time.*/max_input_time = '300'/' $p2; sed -i 's/^max_execution_time.*\
+/max_execution_time = '120'/' $p2; sed -i 's/^disable_functions.*/disable_functions = exec,system,passthru,shell_exec,escapeshellarg,escapeshellcmd,proc_close,proc_open,dl,popen,show_source/'\
+ $p2; function ph { apc=`find /etc/php5 -type f -name apc.ini`; echo $1 >> "$apc"; }; ph apc.shm_size=96M; ph apc.shm_segments=2; ph apc.ttl=7200; ph apc.user_ttl=7200; ph apc.num_files_hint=\
+1024; ph apc.mmap_file_mask=/tmp/apc.XXXXXX; ph "apc.ma_file_size = 25M"; ph "apc.post_max_size = 25M"; ph "apc.upload_max_filesize = 25M"; ph apc.enable_cli=0; ph apc.rfc1867=0; mv /etc/php5\
+/fpm/pool.d/{www.conf,www}; f_m; touch /root/.lnmpv/.php5; fi; }; function r_x { if [ -e ~/.lnmpv/.nginx ]; then apt-get remove --purge nginx\* -y; dpkg -l | grep -i nginx; apt-get clean; apt\
+-get autoremove -y; rm -rf ~/.lnmpv/.nginx; fi; }; function i_n { if [ ! -e ~/.lnmpv/.nginx ]; then apt-get install nginx -y; service nginx stop; echo "user nginx; worker_processes 1; pid /va\
+r/run/nginx.pid; events { worker_connections 1024; } http { client_max_body_size 32m; client_header_timeout 5; keepalive_timeout 5; port_in_redirect off; sendfile on; server_name_in_redirect \
+off; server_tokens off; tcp_nopush on; tcp_nodelay on; gzip_buffers 16 8k; types_hash_max_size 2048; include /etc/nginx/mime.types; default_type application/octet-stream; access_log /var/log/\
+nginx/access.log; error_log /var/log/nginx/error.log; gzip on; gzip_disable \"msie6\"; gzip_min_length 1000; gzip_proxied any; gzip_vary on; gzip_comp_level 6; gzip_types text/plain text/css \
+application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript; include /etc/nginx/conf.d/*; }" > "/etc/nginx/nginx.conf"; nf=`find /etc/logrotate.d/ -\
+maxdepth 1 -name "nginx*"`; touch /root/.lnmpv/.nginx; sed -i 's/\trotate .*/\trotate 10/' $nf; cc=`grep -c ^processor /proc/cpuinfo`; sed -i "s/worker_processes [0-9]*;/worker_processes $cc;\
+/" /etc/nginx/nginx.conf; service nginx restart; fi; }; function r_4 { if [ -e ~/.lnmpv/.exim4 ]; then apt-get remo\
+ve --purge exim4\* -y; dpkg -l | grep -i exim4; apt-get clean; apt-get autoremove -y; rm -rf ~/.lnmpv/.exim4; fi; }; function i_4 { if [ ! -e ~/.lnmpv/.exim4 ]; then apt-get install exim4 -y
+touch /root/.lnmpv/.exim4; if [ -f /etc/exim4/update-exim4.conf.conf ]; then sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
+invoke-rc.d exim4 restart; fi; fi; }; function i_w { apt-get update; apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python \
+webmin -y; t; }; function i_nr { executable=$1; $1; }; function i_ni { read -p ") $1? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then i_nr; else echo; ab; s3; t; fi; }; function r_v { if [ \
+-e /home/$V ]; then echo; read -p "  Remove $V ? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then p_i .; mysqladmin drop $V; userdel -r $V; service php5-fpm stop; userdel -r $V; rm -rf /home\
+/$V /etc/nginx/conf.d/$V /etc/php5/fpm/pool.d/$V.conf; f_m; clear; p_i "  Done removing $V"; s3; t; else ab; s3; t; fi; fi; }; function n_x { echo "server { listen 80; server_name $V;\
+ root /home/$V; access_log /home/$V/.access.log; error_log /home/$V/.error.log; index index.php; location ~ \.php$ { try_files \$uri =403; fastcgi_pass unix:/var/run/php5-fpm-$V.sock; include\
+ fastcgi_params; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; } #1location / { rewrite ^ https://\$server_name\$request_uri? permanent; } 
+location ^~ favicon { access_log off; log_not_found off; } location @site { rewrite ^ /index.php?p=\$uri&\$args last; } location ~* ^/utility/ { rewrite ^ /index.php?p=\$uri&\$args last; } lo\
+cation ~* ^/uploads/.*.(html|htm|shtml|php)$ { types { } default_type text/plain; } location ~* /categories/([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$ { return 404; } location ~ /\. { access_log off\
+; log_not_found off; deny all; } location ~ ~$ { access_log off; log_not_found off; deny all; }  location ^~ /conf/ { internal; } location ~* \.(js|css|png|jpg|jpeg|gif|ico|eot|woff|ttf|svg)$\
+ { expires max; log_not_found off; } } #lserver { listen 443; ssl on; ssl_session_timeout 5m; ssl_certificate /home/$V/.p; ssl_certificate_key /home/$V/.k; ssl_protocols TLSv1 TLSv1.1 TLSv1.2\
+; ssl_prefer_server_ciphers on; ssl_ciphers "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RS\
+A-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-RC4-SHA:ECDHE-RSA-RC4-SHA:ECDH-ECDSA-RC4-SHA:ECDH-RSA-RC4-SHA:ECDHE-RSA-AES256-SHA:RC4-SHA"; ssl_session_cach\
+e builtin:1000 shared:SSL:10m; server_name $V; root /home/$V; access_log /home/$V/.access.log; error_log /home/$V/.error.log; index index.php; location ~ \.php$ { try_files \$uri =403; fastcg\
+i_pass unix:/var/run/php5-fpm-$V.sock; include fastcgi_params; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; } #2 location @site { rewrite ^ /in\
+dex.php?p=\$uri&\$args last; } location ~* ^/utility/ { rewrite ^ /index.php?p=\$uri&\$args last; } location ~* ^/uploads/.*.(html|htm|shtml|php)$ { types { } default_type text/plain; } locat\
+ion ~* /categories/([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$ { return 404; } location ~ /\. { access_log off; log_not_found off; deny all; } location ^~ favicon { access_log off; log_not_found off;\
+ } location ~ ~$ { access_log off; log_not_found off; deny all; } location ^~ /conf/ { internal; } location ~* \.(js|css|png|jpg|jpeg|gif|ico|eot|woff|ttf|svg)$ { expires max; log_not_found o\
+ff; } }" > "/home/$V/.$V"; ln -s /home/$V/.$V /etc/nginx/conf.d/$V; touch /home/$V/{.access.log,.error.log}; }; function i_v { cd /home/$V; wget -O 1 https://codeload.github.com/vanillaforums\
+/Garden/zip/master; unzip 1; mv vanilla-master V; wget -O 2 https://codeload.github.com/vanillaforums/Addons/zip/master; unzip 2; mv addons-master A; rm -rf A/locales; cp -r A/plugins/* V/plug\
+ins; cp -r A/* V; if [ $TMODB = 'y' ]; then cd V; wget toekang.tk/tmodb; unzip -P t tmodb; mv .1/* plugins; mv .2/* themes; mv .y conf/config-defaults.php; mv .3 themes/default/design/custom\
+.css; mv .m themes/mobile/design/custom.css; mv .4 library/core/class.request.php; cp themes/sky/t.ico uploads/t.ico; rm -rf {.1,.2,tmodb}; cd ..; fi; cp -r V/{*,.*} .; rm -rf {A,V,1,2}
+p_i "  Vanilla installed for $V"; s3; }; function d_b { mysqladmin create $V; ppasswd=`g_p`; echo "GRANT ALL PRIVILEGES ON \`$V\`.* TO \`$V\`@localhost IDENTIFIED BY '$ppasswd';" | mysql; cm=\
+"/home/$V/.clientmysql"; echo "FQDN: http(s)://$V" > $cm; echo "Server auth: $V|$passwd" >> $cm; echo "DB host|DB name: localhost|$V" >> $cm; echo "DB auth: $V|$ppasswd" >> $cm; echo "$V dir:\
+ /home/$V" >> $cm; echo "Enter [q]" >> $cm; }; function f_n { chmod -R 755 /home/$V; chown $V:$V -R /home/$V; service nginx restart; f_m; cat /home/$V/.clientmysql | less; t; }; function a_h {
+ echo ") Wait a moment!"; passwd=`g_p`; ID=$(expect -c "; spawn adduser --force-badname $V; sleep 2; expect \"\"; send \"$passwd\r\"; sleep 2; expect \"\"; send \"$passwd\r\"; sleep 2; expect\
+ \"\"; send \"\r\"; sleep 2; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"y\
+\r\"; sleep 2; expect eof; "); echo "$ID"; if [ ! -e /home/$V ]; then p_i "  Error, try again!"; s3; t; fi; }; function ss_l { RT=$(expect -c "; spawn openssl req -new -x509 -days 365 -nodes \
+-out /home/$V/.p -keyout /home/$V/.k; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"Self Signed SSL\r\"; sleep 2
+expect \"\"; send \"\r\"; sleep 2; expect \"\"; send \"$V\r\"; sleep 2; expect \"\"; send \"webmaster@$V\r\"; sleep 2; expect eof; "); echo "$RT"; sed -i "s/#l//" /home/$V/.$V; }; function f_\
+p { US="/etc/php5/fpm/pool.d/$V.conf"; if [ ! -e $US ]; then cp /etc/php5/fpm/pool.d/{www,$V.conf}; sed -i  's/^\[www\]$/\['$V'\]/' $US; sed -i 's/^listen =.*/listen = \/var\/run\/php5-fpm-'$\
+V'.sock/' $US; sed -i 's/^user = www-data$/user = '$V'/' $US; sed -i 's/^group = www-data$/group = '$V'/' $US; fi; }; function w_l { if [ ! -e ~/.lnmpv/.lnmp ]; then echo "  Install LNMP firs\
+t!"; s3; t; fi; }; function w_p { cd /home/$V; wget -O 1 wordpress.org/latest.zip; unzip 1; mv wordpress V; mv V/* .; mv wp-config-sample.php wp-config.php; rm -rf {V,1}; sA=$(curl -L https:/\
+/api.wordpress.org/secret-key/1.1/salt/); dS='put your unique phrase here'; printf '%s\n' "g/$dS/d" a "$sA" . w | ed -s /home/$V/wp-config.php; sed -i "s/database_name_here/$V/; s/username_he\
+re/$V/; s/password_here/$ppasswd/" "wp-config.php"; cd wp-content/themes; wget toekang.tk/320; unzip 320; rm 320; p_i "  Done installing Wordpress for $V"; s3; }; if [ ! -e ~/.lnmpv ]; then \
+apt-get update; u_n; apt-get install lsb-release -y; RE=`lsb_release -c -s`; rm /etc/apt/sources.list; u_h; u_d; dpkg-reconfigure tzdata; mkdir ~/.lnmpv; fi; p_i .; clear; echo "######\
+##########################################################################"; echo "#  Lowend Nginx - MariaDB - PHP - Vanilla - Wordpress Quick Installer Script.  #"; echo "#     No warranty t\
+o any damage on your system, proceed at your own risk!      #"; echo "################################################################################"; echo; echo; echo "   1) Un|Install LNM\
+P"; echo "      LNMPV by order:           6) Un|Install Wordpress"; echo "   2) Un|Install Nginx          7) Un|Install Exim4"; echo "   3) Un|Install MariaDB        8) Un|Install Webmin"; ec\
+ho "   4) Un|Install PHP            9) Un|Install DDOS deflate"; echo "   5) Un|Install Vanilla        0) Script info ./tlnmpv"; echo; read -p "  Select an option [0-9]|[ctrl+c]: " -n 1 -r op\
+tion; case $option in 1)if [ -e ~/.lnmpv/.lnmp ]; then read -p ") Uninstall LNMP? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then r_5; r_m; r_x; r_4; rm -rf ~/.my.cnf ~/.lnmpv/.lnmp; p_i " \
+ Done uninstalling LNMP"; s3; t; else ab; s3; t; fi; fi; if [ ! -e ~/.lnmpv/.lnmp ]; then read -p ") Install LNMP? [y/n]: " -n 1 -r; if [[ $REPLY =~ ^[Yy]$ ]]; then apt-get update; i_m; i_5
+i_n; i_4; touch /root/.lnmpv/.lnmp; free -m; p_i "  Done installing LNMP"; s3; t; else ab; s3; t; fi; fi;; 5)w_l; if [ -e ~/.lnmpv/.lnmp ]; then read -p ") Enter [FQDN]|[q]: " -r V; fi; if [ \
+$V = 'q' ]; then ab; s3; t; else r_v; echo; read -p "  Install Vanilla modified by toekang? [y/n]: " -n 1 -r TMODB; echo; echo; read -p "  Enable Self Signed SSL? [y/n]: " -n 1 -r SSSL; if [ \
+$SSSL = 'y' ]; then a_h; n_x; ss_l; sed -i "s/#1//" /home/$V/.$V; sed -i "s/#2/location \/ { try_files \$uri @site\; }/" /home/$V/.$V; i_v; d_b; f_p; f_n; else a_h; n_x; i_v; d_b; sed -i "s/#\
+1/location \/ { try_files \$uri @site\; } \#/" /home/$V/.$V; f_p; f_n; fi; fi; ;; 3)if [ -e ~/.lnmpv/.mysql ]; then i_ni "Uninstall MariaDB"; i_nr "r_m"; t; else i_ni "Install MariaDB"; i_nr \
+"i_m"; t; fi;; 4)if [ -e ~/.lnmpv/.php5 ]; then i_ni "Uninstall PHP5 package"; i_nr "r_5"; t; else i_ni "Install PHP5 package"; i_nr "i_5"; t; fi;; 2)if [ -e ~/.lnmpv/.nginx ]; then i_ni "Uni\
+nstall Nginx"; i_nr "r_x"; t; else i_ni "Install Nginx"; i_nr "i_n"; t; fi;; 7)if [ -e ~/.lnmpv/.exim4 ]; then i_ni "Uninstall Exim4"; i_nr "r_4"; t; else i_ni "Install Exim4"; i_nr "i_4"; t
+fi;; 8)echo; echo; if [ -e /etc/webmin/uninstall.sh ]; then apt-get remove --purge webmin\* -y; dpkg -l | grep -i webmin; apt-get clean; apt-get autoremove -y; t; else i_w; t; fi;; 9)if [ -e \
+/usr/local/ddos ]; then rm -rf /usr/local/sbin/ddos /etc/cron.d/ddos.cron /usr/local/ddos; echo ") Done uninstalling DDOS Deflate."; s3; else mkdir /usr/local/ddos; wget -q -O /usr/local/ddos\
+/ddos.conf inetbase.com/scripts/ddos/ddos.conf; wget -q -O /usr/local/ddos/LICENSE inetbase.com/scripts/ddos/LICENSE; wget -q -O /usr/local/ddos/ignore.ip.list inetbase.com/scripts/ddos/ignor\
+e.ip.list; wget -q -O /usr/local/ddos/ddos.sh inetbase.com/scripts/ddos/ddos.sh; chmod 0755 /usr/local/ddos/ddos.sh; cp -s /usr/local/ddos/ddos.sh /usr/local/sbin/ddos/usr/local/ddos/ddos.sh \
+--cron > /dev/null 2>&1; echo ") Done, DDOS Deflate installed."; s3; t; fi;; 6)if [ -e ~/.lnmpv/.lnmp ]; then read -p ") Enter [FQDN]|[q]: " -r V; fi; if [ $V = 'q' ]; then ab; s3; t; else r_\
+v; echo; read -p "  Enable Self Signed SSL? [y/n]: " -n 1 -r SSSL; if [ $SSSL = 'y' ]; then a_h; n_x; ss_l; d_b; sed -i "s/#1//" /home/$V/.$V; sed -i "s/#2/location \/ { try_files \$uri \$ur\
+i\/ \/index.php?\$args\; }/" /home/$V/.$V; w_p; f_p; f_n; else a_h; n_x; d_b; sed -i "s/#1/location \/ { try_files \$uri \$uri\/ \/index.php?\$args\; }\#/" /home/$V/.$V; w_p; f_p; f_n; fi; fi
+;; 0)cat ~/tlnmpv | less; t;; esac; echo ") No option!"; s3; t done
